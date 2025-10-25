@@ -3,9 +3,36 @@ const API_BASE = "http://localhost:8000/api"; // ถ้า deploy แล้ว�
 const form = document.getElementById("uploadForm");
 const gallery = document.getElementById("gallery");
 const message = document.getElementById("message");
-// Lightbox elements
 const lightbox = document.getElementById("lightbox");
 const lightboxImage = document.getElementById("lightboxImage");
+// Theme toggle
+const themeToggle = document.getElementById("themeToggle");
+const THEME_KEY = "theme";
+
+function preferredTheme() {
+  const saved = localStorage.getItem(THEME_KEY);
+  if (saved === "light" || saved === "dark") return saved;
+  return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+}
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  if (themeToggle) {
+    themeToggle.textContent = theme === "light" ? "🌙 Dark" : "☀️ Light";
+    themeToggle.setAttribute("aria-label", `Switch to ${theme === "light" ? "dark" : "light"} mode`);
+  }
+}
+applyTheme(preferredTheme());
+
+themeToggle?.addEventListener("click", () => {
+  const next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+  localStorage.setItem(THEME_KEY, next);
+  applyTheme(next);
+});
+
+// React to system changes if user hasn't chosen manually
+window.matchMedia("(prefers-color-scheme: light)")?.addEventListener?.("change", (e) => {
+  if (!localStorage.getItem(THEME_KEY)) applyTheme(e.matches ? "light" : "dark");
+});
 
 // โหลดรูปทั้งหมดตอนเปิดเว็บ
 window.onload = fetchImages;
@@ -86,7 +113,7 @@ function closeLightbox() {
   document.body.style.overflow = "";
 }
 
-// ปิดเมื่อคลิกพื้นหลังหรือปุ่มปิด
+// ปิดเมื่อคลิกพื้นหลังหรือปุ่มปิด / ปิดด้วยปุ่ม Escape
 lightbox.addEventListener("click", (e) => {
   if (e.target.id === "lightbox" || e.target.classList.contains("lightbox-close")) {
     closeLightbox();
