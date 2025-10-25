@@ -23,7 +23,7 @@
 
 ## โครงสร้างโปรเจกต์
 
-
+```md
 image_upload_system/
 │
 ├── .env
@@ -42,6 +42,7 @@ image_upload_system/
 │   └── script.js
 │
 └── POST.png
+```
 
 ````
 
