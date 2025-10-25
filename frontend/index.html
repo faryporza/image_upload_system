@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Upload System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>📤 Upload Image</h1>
+
+    <form id="uploadForm">
+      <input type="file" id="imageInput" name="image" accept="image/*" required />
+      <button type="submit">Upload</button>
+    </form>
+
+    <p id="message"></p>
+
+    <h2>🖼️ Uploaded Images</h2>
+    <div id="gallery" class="gallery"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
