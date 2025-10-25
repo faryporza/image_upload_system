@@ -29,6 +29,13 @@
           </div>
         </label>
         <input id="imageInput" type="file" accept="image/*" required hidden />
+        <!-- Preview before upload -->
+        <div id="preview" class="preview hidden" aria-live="polite">
+          <img id="previewImg" alt="Image preview" />
+          <div class="meta">
+            <div id="previewInfo" class="preview-info"></div>
+          </div>
+        </div>
         <div class="actions">
           <button type="submit" class="btn primary">Upload</button>
           <span id="message" class="message" aria-live="polite"></span>

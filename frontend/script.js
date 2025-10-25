@@ -9,6 +9,13 @@ const lightboxImage = document.getElementById("lightboxImage");
 const themeToggle = document.getElementById("themeToggle");
 const THEME_KEY = "theme";
 
+// Preview elements
+const imageInputEl = document.getElementById("imageInput");
+const previewEl = document.getElementById("preview");
+const previewImgEl = document.getElementById("previewImg");
+const previewInfoEl = document.getElementById("previewInfo");
+let previewObjectUrl = null;
+
 function preferredTheme() {
   const saved = localStorage.getItem(THEME_KEY);
   if (saved === "light" || saved === "dark") return saved;
@@ -37,6 +44,43 @@ window.matchMedia("(prefers-color-scheme: light)")?.addEventListener?.("change",
 // โหลดรูปทั้งหมดตอนเปิดเว็บ
 window.onload = fetchImages;
 
+// เมื่อมีการเลือกไฟล์ แสดงตัวอย่างก่อนอัปโหลด
+imageInputEl?.addEventListener("change", () => {
+  const file = imageInputEl.files?.[0];
+  updatePreview(file);
+});
+
+function updatePreview(file) {
+  // cleanup previous object URL
+  if (previewObjectUrl) {
+    URL.revokeObjectURL(previewObjectUrl);
+    previewObjectUrl = null;
+  }
+  if (!file) {
+    previewImgEl.src = "";
+    previewInfoEl.textContent = "";
+    previewEl.classList.add("hidden");
+    return;
+  }
+  if (!file.type?.startsWith("image/")) {
+    previewImgEl.src = "";
+    previewInfoEl.textContent = "ไฟล์ที่เลือกไม่ใช่รูปภาพ";
+    previewEl.classList.remove("hidden");
+    return;
+  }
+  previewObjectUrl = URL.createObjectURL(file);
+  previewImgEl.src = previewObjectUrl;
+  previewInfoEl.textContent = `${file.name} • ${formatBytes(file.size)}`;
+  previewEl.classList.remove("hidden");
+}
+
+function formatBytes(bytes) {
+  const units = ["B", "KB", "MB", "GB"];
+  let i = 0, n = bytes;
+  while (n >= 1024 && i < units.length - 1) { n /= 1024; i++; }
+  return `${n.toFixed(n < 10 && i > 0 ? 1 : 0)} ${units[i]}`;
+}
+
 // 📤 อัปโหลดรูป
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -54,12 +98,12 @@ form.addEventListener("submit", async (e) => {
       method: "POST",
       body: formData,
     });
-
     const data = await res.json();
 
     if (res.ok) {
       message.textContent = "✅ Upload success!";
       fileInput.value = "";
+      updatePreview(null); // เคลียร์พรีวิวหลังอัปโหลดสำเร็จ
       fetchImages();
     } else {
       message.textContent = `❌ Error: ${data.error || "Upload failed"}`;

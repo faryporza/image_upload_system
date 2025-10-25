@@ -283,3 +283,36 @@ html[data-theme="light"] .delete-btn {
   cursor: pointer;
 }
 .lightbox-close:hover { background: rgba(2,6,23,.7); }
+
+.preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(15,23,42,.7), rgba(11,18,32,.85));
+}
+.preview img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #0a1020;
+  border: 1px solid var(--border);
+}
+.preview-info {
+  color: var(--muted);
+  font-size: 14px;
+}
+.hidden { display: none; }
+
+/* Light theme adjustments */
+html[data-theme="light"] .preview {
+  background: #ffffff;
+  border-color: var(--border);
+}
+html[data-theme="light"] .preview img {
+  background: #f1f5f9;
+  border-color: var(--border);
+}
