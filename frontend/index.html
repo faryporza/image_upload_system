@@ -1,26 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Image Upload System</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="container">
-    <h1>📤 Upload Image</h1>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Image Upload System</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <h1>อัปโหลดรูปภาพ</h1>
+        <p class="subtitle">อัปโหลดรูป ดูทั้งหมด และลบได้ในคลิกเดียว</p>
+      </div>
+    </header>
 
-    <form id="uploadForm">
-      <input type="file" id="imageInput" name="image" accept="image/*" required />
-      <button type="submit">Upload</button>
-    </form>
+    <main class="container">
+      <form id="uploadForm" class="upload-form">
+        <label for="imageInput" class="dropzone" tabindex="0">
+          <div class="dz-icon">📷</div>
+          <div class="dz-text">
+            <strong>เลือกไฟล์ภาพ</strong> หรือ ลากไฟล์มาวางที่นี่
+            <div class="dz-hint">รองรับ .jpg .png .gif</div>
+          </div>
+        </label>
+        <input id="imageInput" type="file" accept="image/*" required hidden />
+        <div class="actions">
+          <button type="submit" class="btn primary">Upload</button>
+          <span id="message" class="message" aria-live="polite"></span>
+        </div>
+      </form>
 
-    <p id="message"></p>
+      <section>
+        <h2 class="section-title">แกลเลอรี</h2>
+        <div id="gallery" class="gallery"></div>
+      </section>
+    </main>
 
-    <h2>🖼️ Uploaded Images</h2>
-    <div id="gallery" class="gallery"></div>
-  </div>
+    <footer class="footer">
+      <div class="container">
+        <small>ระบบอัปโหลดรูปภาพ ลง Cloudinary Cloud</small>
+      </div>
+    </footer>
 
-  <script src="script.js"></script>
-</body>
+    <!-- Fullscreen image preview -->
+    <div id="lightbox" class="lightbox" aria-hidden="true">
+      <button type="button" class="lightbox-close" aria-label="Close">✕</button>
+      <img id="lightboxImage" alt="Preview" />
+    </div>
+
+    <script src="./script.js" defer></script>
+  </body>
 </html>
