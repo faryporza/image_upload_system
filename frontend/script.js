@@ -3,6 +3,9 @@ const API_BASE = "http://localhost:8000/api"; // ถ้า deploy แล้ว�
 const form = document.getElementById("uploadForm");
 const gallery = document.getElementById("gallery");
 const message = document.getElementById("message");
+// Lightbox elements
+const lightbox = document.getElementById("lightbox");
+const lightboxImage = document.getElementById("lightboxImage");
 
 // โหลดรูปทั้งหมดตอนเปิดเว็บ
 window.onload = fetchImages;
@@ -60,6 +63,42 @@ async function fetchImages() {
     gallery.innerHTML = `<p>Error loading images</p>`;
   }
 }
+
+// เปิดรูปแบบเต็มเมื่อคลิกที่รูป (ยกเว้นปุ่มลบ)
+gallery.addEventListener("click", (e) => {
+  if (e.target.closest(".delete-btn")) return; // ignore delete clicks
+  const imgEl = e.target.closest("img");
+  if (!imgEl || !gallery.contains(imgEl)) return;
+  openLightbox(imgEl.src);
+});
+
+function openLightbox(src) {
+  lightboxImage.src = src;
+  lightbox.classList.add("open");
+  lightbox.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+
+function closeLightbox() {
+  lightbox.classList.remove("open");
+  lightbox.setAttribute("aria-hidden", "true");
+  lightboxImage.src = "";
+  document.body.style.overflow = "";
+}
+
+// ปิดเมื่อคลิกพื้นหลังหรือปุ่มปิด
+lightbox.addEventListener("click", (e) => {
+  if (e.target.id === "lightbox" || e.target.classList.contains("lightbox-close")) {
+    closeLightbox();
+  }
+});
+
+// ปิดด้วยปุ่ม Escape
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && lightbox.classList.contains("open")) {
+    closeLightbox();
+  }
+});
 
 // 🗑️ ลบรูป
 async function deleteImage(id) {
