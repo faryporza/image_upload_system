@@ -5,8 +5,11 @@ import express from "express";
 import mongoose from "mongoose";
 import { v2 as cloudinary } from "cloudinary";
 import uploadRoutes from "./routes/uploadRoutes.js";
+import cors from "cors";
+    
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 // ✅ เชื่อม MongoDB
